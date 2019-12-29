@@ -1,21 +1,23 @@
 ---
 title: "Lab 27. K-means"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Чтение и подготовка данных
+## Data Preprocessing
 
 ```{r extract plants}
 plants <- read.csv("plants.csv", sep=';')
 head(plants) 
 ```
-1. Удалим строки, где отсутствует больше 3 значений
-2. Заменим все NA на среднее по столбцу
-3. Нормализуем некоторые столбцы
+1. Remove rows with at least 3 NAs
+2. Replace NAs with column means
+3. Scale columns with doubles
 
 ```{r pressure}
 prepare_dataframe <- function(data) {
@@ -46,6 +48,7 @@ plants <- subset(plants, select=c(pdias, longindex, insects, leafy))
 
 ## K-means
 
+Find the last number of cluster that significantly decreases the error.
 ```{r}
 set.seed(1234)
 
